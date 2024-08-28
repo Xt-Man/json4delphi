@@ -46,6 +46,14 @@ begin
     Result := '0'+Result;
 end;
 
+function BoolToStrJson(aValue: Boolean): String;
+begin
+  if aValue then
+   result := 'true'
+  else
+    result := 'false';
+end;
+
 function JSONDateToString(aDate : TDateTime) : String;
 begin
   Result := '"'+ZeroFillStr(YearOf(aDate),4)+'-'+
@@ -265,7 +273,10 @@ begin
         tkEnumeration:
         begin
           sVal := GetEnumProp(obj,string(pl[i].Name));
-          sVal := '"'+js.Encode(IntToStr(GetEnumValue(pl[i]^.PropType^,sVal)))+'"';     //GetEnumValue(pl[i]^.PropType^,GetEnumProp(obj,pl[i].Name))
+          if InArray(sVal,BooleanIdents) then
+           sVal := BoolToStrJson(StrToBool(sVal))
+          else
+           sVal := '"'+js.Encode(IntToStr(GetEnumValue(pl[i]^.PropType^,sVal)))+'"';     //GetEnumValue(pl[i]^.PropType^,GetEnumProp(obj,pl[i].Name))
         end;
         tkClass:
         begin
