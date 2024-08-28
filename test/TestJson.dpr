@@ -4,7 +4,9 @@ program TestJson;
 
 uses
   SysUtils,
-  Jsons in '..\src\Jsons.pas';
+  Jsons in '..\src\Jsons.pas',
+  ClassesTest in 'ClassesTest.pas',
+  JsonsUtilsEx in '..\src\JsonsUtilsEx.pas';
 
 procedure RunTest;
 var
@@ -52,7 +54,23 @@ begin
   end;
 end;
 
+procedure RunTestObjectToJson;
+var
+  Person: TPerson;
+  JsonString: String;
 begin
-  RunTest;
+  Person := TPerson.create('Batman',42);
+  Person.IsSuperHero := true;
+  Person.Weight := 90; // Kg
+  Person.Birthday := EncodeDate(1939,7,23);
+
+  JsonString := __ObjectToJson(Person);
+
+  WriteLn(JsonString);
+end;
+
+begin
+  //RunTest;
+  RunTestObjectToJson;
   ReadLn;
 end.
